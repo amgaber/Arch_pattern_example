@@ -57,14 +57,16 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: TaskTableViewCell.identifier, for: indexPath) as? TaskTableViewCell else {  fatalError("Failed to dequeue TaskTableViewCell")
-        }
-            
-            let taskViewModel = viewModel.taskViewModel(at: indexPath.row)
-            cell.configure(with: taskViewModel)
-            
-            return cell
-        }
+        
+//        guard let cell =  TableViewHelper.cellForIndexPath(indexPath, withIdentifier: CellView.identifier, andViewModel: viewModel, in: tableView) as? UITableViewCell
+//        else {  fatalError("Failed to dequeue TaskTableViewCell") }
+//
+        let cell =  TableViewHelper.cellForIndexPath(indexPath, withIdentifier: CellView.identifier, andViewModel: viewModel, in: tableView)
+        
+        let taskViewModel = viewModel.taskViewModel(at: indexPath.row)
+//        cell.configure(with: taskViewModel)
+        return cell
+    }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
@@ -77,9 +79,10 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let detailsViewController = TaskDetailsViewController(viewModel: taskViewModel)
         
         navigationController?.pushViewController(detailsViewController, animated: true)
-        
-        
-        
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        UITableView.automaticDimension
     }
     
 }

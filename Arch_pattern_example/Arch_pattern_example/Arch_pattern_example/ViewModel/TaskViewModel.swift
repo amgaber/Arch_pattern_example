@@ -27,6 +27,18 @@ class TaskViewModel {
         item.species
     }
     
+    var gender: Gender {
+        item.gender
+    }
+    
+    var location: Location {
+        item.location
+    }
+    
+    var status: Status {
+        item.status
+    }
+    
     var numberofRows: Int {
         item.name.count
     }

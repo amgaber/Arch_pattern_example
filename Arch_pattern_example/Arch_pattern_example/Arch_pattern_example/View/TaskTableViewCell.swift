@@ -11,14 +11,6 @@ import UIKit
 class TaskTableViewCell: UITableViewCell {
     static let identifier: String = "TaskTableViewCell"
     
-    
-//    private let titleLabel: UILabel = {
-//        let label = UILabel()
-//        label.font = .systemFont(ofSize: 16, weight: .medium)
-//        label.textColor = .label
-//        return label
-//    }()
-    
     private let titleLabel: UILabel = UILabel()
     private let descriptionLabel: UILabel = UILabel()
     

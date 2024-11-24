@@ -23,6 +23,13 @@ struct TableViewHelper{
     }
     
     static func detailView(with  viewModel: TaskViewModel) -> UIViewController {
-        return UIHostingController(rootView: DetailView(name: viewModel.name, imageURL: viewModel.imageString, location: " ", gender: " ", species: viewModel.species.rawValue)) 
+        return UIHostingController(rootView:
+                                    DetailView(
+                                        name: viewModel.name,
+                                        imageURL: viewModel.imageString,
+                                        species: viewModel.species.rawValue,
+                                        status: viewModel.status.rawValue,
+                                        location: viewModel.location.name,
+                                        gender: viewModel.gender.rawValue))
     }
 }

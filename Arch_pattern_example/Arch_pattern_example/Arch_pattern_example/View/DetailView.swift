@@ -10,9 +10,10 @@
     struct DetailView: View {
         let name:String
         let imageURL:String
+        let species: String
+        let status: String
         let location: String
         let gender: String
-        let species: String
         
         var body: some View {
             
@@ -22,19 +23,28 @@
                 VStack {
                     HStack {
                         VStack(alignment: .leading){
-                            Text(name)
-                                .font(.title)
-                                .bold()
+                            HStack {
+                                Text(name)
+                                    .font(.title)
+                                    .bold()
+                                Spacer()
+                                Text(status)
+                                    .padding(10)
+                                    .background(Color.blue)
+                                    .foregroundColor(.white)
+                                    .cornerRadius(10)
+                            }
                             HStack {
                                 Text("\(species)")
                                 Text("\(gender)")
                             }
-                            Text("Location: \(location)")
-                        }
-                        Spacer()
-                        Button(action: {}) {
-                            Image(systemName: "heart")
-                                .foregroundStyle(.blue)
+                            HStack {
+                                Text("Location:")
+                                    .font(.subheadline.bold())
+                                Text("\(location)")
+                                    .foregroundColor(.secondary)
+                            }
+                            
                         }
                     }
                     .padding()
@@ -49,5 +59,5 @@
     }
 
     #Preview {
-        DetailView(name: "Alaa", imageURL: "https://rickandmortyapi.com/api/character/avatar/361.jpeg", location: "Earth", gender: "Male", species: "ELF")
+        DetailView(name: "Alaa", imageURL: "https://rickandmortyapi.com/api/character/avatar/361.jpeg", species: "Elf", status: "Male", location: "Earth", gender: "Male")
     }

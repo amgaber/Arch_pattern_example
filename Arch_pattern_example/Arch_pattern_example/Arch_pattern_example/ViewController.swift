@@ -58,13 +58,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-//        guard let cell =  TableViewHelper.cellForIndexPath(indexPath, withIdentifier: CellView.identifier, andViewModel: viewModel, in: tableView) as? UITableViewCell
-//        else {  fatalError("Failed to dequeue TaskTableViewCell") }
-//
         let cell =  TableViewHelper.cellForIndexPath(indexPath, withIdentifier: CellView.identifier, andViewModel: viewModel, in: tableView)
-        
         let taskViewModel = viewModel.taskViewModel(at: indexPath.row)
-//        cell.configure(with: taskViewModel)
         return cell
     }
     

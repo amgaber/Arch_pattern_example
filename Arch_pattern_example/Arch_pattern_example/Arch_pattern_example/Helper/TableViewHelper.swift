@@ -21,4 +21,8 @@ struct TableViewHelper{
         
         return cell
     }
+    
+    static func detailView(with  viewModel: TaskViewModel) -> UIViewController {
+        return UIHostingController(rootView: DetailView(name: viewModel.name, imageURL: viewModel.imageString, location: " ", gender: " ", species: viewModel.species.rawValue)) 
+    }
 }

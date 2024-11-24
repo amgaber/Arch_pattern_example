@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import UIKit
+import SwiftUI
 
 class TaskDetailsViewController: UIViewController {
     
@@ -27,21 +27,12 @@ class TaskDetailsViewController: UIViewController {
         view.backgroundColor = .white
         title = viewModel.name
         
-        let descriptionLabel = UILabel()
-        descriptionLabel.text = viewModel.species.rawValue
-        descriptionLabel.numberOfLines = 0
-        descriptionLabel.textAlignment = .center
-        view.addSubview(descriptionLabel)
+        let vc = TableViewHelper.detailView(with: viewModel)
+        addChild(vc)
+        view.addSubview(vc.view)
+        vc.didMove(toParent: self)
+        vc.view.frame = view.bounds
         
-        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            descriptionLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            descriptionLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            descriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            descriptionLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
-                    
-        ])
     }
     
     

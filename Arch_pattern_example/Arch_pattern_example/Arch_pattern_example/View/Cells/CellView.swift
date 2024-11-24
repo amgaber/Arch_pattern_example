@@ -16,25 +16,15 @@ struct CellView: View {
     
     var body: some View {
         HStack(){
-            AsyncImage(url: URL(string: imageURL)){ phase in
-                if let image = phase.image {
-                    image
-                        .resizable()
-                        .scaledToFit()
-                } else if phase.error != nil {
-                    Image(systemName: "person.fill.questionmark").resizable()
-                        .scaledToFit()
-                } else {
-                    ProgressView()
-                }
-                        
-                }
-            .frame(width: 80,height: 80)
-            
-                
-            
+            ImageUIView(imageURL: imageURL)
+                .frame(width: 80,height: 80)
+                .cornerRadius(10)
+
             VStack(alignment: .leading){
                 Text(name)
+                    .font(.subheadline.bold())
+                Text(species)
+                    .font(.footnote.weight(.light))
             }
             .padding()
         }

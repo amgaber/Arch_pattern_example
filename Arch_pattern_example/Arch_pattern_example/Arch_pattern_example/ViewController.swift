@@ -10,16 +10,31 @@ import UIKit
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     private let tableView = UITableView()
-    private let viewModel  = TaskListViewModel()
-    
+    private var viewModel  = TaskListViewModel()
+
+    var onTasksUpdated: (() -> Void)?
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         // Do any additional setup after loading the view.
         setupUI()
+        
+        // Bind ViewModel updates
+        viewModel.onTasksUpdated = { [weak self] in
+            self?.tableView.reloadData()
+        }
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        //fetch Task
+        viewModel.getCharacters()
     }
 
     private func setupUI() {
-            title = "Tasks"
+            title = "Characters"
             view.backgroundColor = .white
             
             // Setup table view
@@ -68,61 +83,3 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
 }
-
-
-//class ViewController: UIViewController ,UITableViewDataSource,UITableViewDelegate{
-//    
-//    
-//    @IBOutlet var tableView: UITableView!
-////    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-//
-////    var itemviewmodel = ItemViewModel()
-//    var viewModel = ListViewModel()
-//    
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//        tableView.dataSource = self
-//        tableView.delegate = self
-//        
-//        viewModel.fetchData { result in
-//            
-//            switch result {
-//            case .success:
-//                DispatchQueue.main.async {
-//                    self.tableView.reloadData()
-////                    self.activityIndicator.stopAnimating()
-//                }
-//            case .failure(let error):
-//                DispatchQueue.main.async {
-//                    print(error.localizedDescription)
-////                    self.activityIndicator.stopAnimating()
-//                }
-//            }
-//        }
-//        
-//        
-//        
-//        
-//        
-////        let vc = UIHostingController(rootView: TestView(itemViewModel: itemviewmodel))
-////        addChild(vc)
-////        view.addSubview(vc.view)
-////        vc.didMove(toParent: self)
-////        vc.view.frame = view.bounds
-//    }
-//    
-//    
-//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        viewModel.items.count
-//    }
-//    
-//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-////        let cell = tableView.dequeueReusableCell(withIdentifier:
-////         "PostCell", for: indexPath)
-////        let post = viewModel.items[indexPath.row]
-////        cell.textLabel?.text = post.name
-////        cell.detailTextLabel?.text = post.gender.rawValue
-//        return UITableViewCell()
-//    }
-//}
-//

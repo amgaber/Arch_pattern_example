@@ -9,21 +9,25 @@ import Foundation
 
 class TaskViewModel {
     
-    private let task: Task
+    private let item: Item
     
-    init(task: Task) {
-        self.task = task
+    init(item: Item) {
+        self.item = item
     }
     
-    var title: String {
-        task.name
+    var name: String {
+        item.name
     }
     
-    var description: String {
-        task.description
+    var imageString: String {
+        item.image
+    }
+   
+    var species: Species {
+        item.species
     }
     
-    var numberofrows: Int {
-        task.name.count
+    var numberofRows: Int {
+        item.name.count
     }
 }

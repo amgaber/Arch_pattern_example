@@ -25,10 +25,10 @@ class TaskDetailsViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .white
-        title = viewModel.title
+        title = viewModel.name
         
         let descriptionLabel = UILabel()
-        descriptionLabel.text = viewModel.description
+        descriptionLabel.text = viewModel.species.rawValue
         descriptionLabel.numberOfLines = 0
         descriptionLabel.textAlignment = .center
         view.addSubview(descriptionLabel)

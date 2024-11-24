@@ -5,23 +5,40 @@
 //  Created by Alaa Gaber on 24/11/2024.
 //
 
-import Foundation
+import UIKit
 class TaskListViewModel{
+   
+    private var taskList: [Item] = []
     
-    let taskList: [Task] = [
-        Task(name: "Alaa", description: "create MVVM"),
-        Task(name: "Buy Groceries", description: "Milk, Bread, Eggs"),
-        Task(name: "Workout", description: "Run 5km in the morning"),
-        Task(name: "Read a Book", description: "Read 'Atomic Habits'")
-    ]
+    private let characterService = CharactersFetchService()
     
+    var onTasksUpdated:(() -> Void)?
+    
+
+    func getCharacters(){
+        
+        self.characterService.fetchTasks { res in
+            switch res {
+            case .success(let items):
+                DispatchQueue.main.async {
+                    self.taskList.append(contentsOf: items)
+
+                    self.onTasksUpdated?()
+                }
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    print(error.localizedDescription)
+                }
+            }
+        }
+    }
+
     func  numberofRows() -> Int{
         taskList.count
     }
     
     //Get a TaskViewModel for a specific row
     func taskViewModel(at index: Int) -> TaskViewModel{
-        TaskViewModel(task: taskList[index])
+        TaskViewModel(item: taskList[index])
     }
-    
 }

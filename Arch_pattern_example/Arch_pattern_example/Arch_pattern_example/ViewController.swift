@@ -49,9 +49,12 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshTapped))
     }
     
-    @objc private func refreshTapped(){}
-    @objc private func filterTapped(){
-        viewModel.filterByStatus(Status.dead)
+    @objc private func refreshTapped(){
+        //fetch Task reset = true for refresh list
+        guard let baseURL = Endpoint.characters(0, "").url else { return }
+        viewModel.getCharacters(from: baseURL , reset: true , append: false)
+        
+        tableView.reloadData()
     }
     
     //event fired by Filter swiftui buttons
@@ -74,7 +77,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             NSLayoutConstraint.activate([
                 tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
                 tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                tableView.topAnchor.constraint(equalTo: view.topAnchor),
+                tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
                 tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
             ])
         }

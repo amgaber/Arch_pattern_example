@@ -1,10 +1,10 @@
-////
-////  ViewController.swift
-////  Yassir_test
-////
-////  Created by Alaa Gaber on 22/11/2024.
-////
 //
+//  ViewController.swift
+//  Arch_pattern_example
+//
+//  Created by Alaa Gaber on 22/11/2024.
+//
+
 import UIKit
 import SwiftUI
 
@@ -66,7 +66,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             // Setup table view
             tableView.dataSource = self
             tableView.delegate = self
-            tableView.register(TaskTableViewCell.self, forCellReuseIdentifier: TaskTableViewCell.identifier)
+            tableView.register(HostingTableViewCell<CellView>.self, forCellReuseIdentifier: CellView.identifier)
             view.addSubview(tableView)
             tableView.translatesAutoresizingMaskIntoConstraints = false
             

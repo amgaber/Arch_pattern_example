@@ -7,6 +7,17 @@
 
 import Foundation
 
+struct Feed {
+  let items: [Item]
+
+  static let `default`: Self = .init(
+    items: [
+        Item(id: 0, name: "Alaa", status: Status.alive, species: "unknown", type: "", gender: .female, origin: Location.init(name: "", url: " "), location: Location.init(name: "", url: ""), image: "", episode: [], url: "", created: "String")
+      
+    ])
+}
+
+
 struct ResultResponse: Codable {
     let info :Info
     let results:[Item]

@@ -8,12 +8,14 @@
 import UIKit
 import SwiftUI
 
-class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class ViewController: UIViewController {
 
     private let tableView = UITableView()
     private var viewModel  = TaskListViewModel()
 
     private var filterView = FilterButtonsView()
+    
+    private lazy var tableViewDataSource: TableDataSource = .init(viewModel: viewModel)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,6 +41,11 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             }
         }
         
+        tableViewDataSource.onPushDelegation = { [weak self] task in
+//            let vc = TaskDetailsViewController(task: task)
+            self?.navigationController?.pushViewController(task, animated: true)
+        }
+        
         //fetch Task with basic URL without pagination
         guard let baseURL = Endpoint.characters(0, "").url else { return }
         viewModel.getCharacters(from: baseURL , reset: false , append: false)
@@ -57,20 +64,19 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         tableView.reloadData()
     }
     
-    //event fired by Filter swiftui buttons
-    func dispatch(_ action: Status) {
-        print("Action: \(action)")
-        viewModel.filterByStatus(action)
-    }
+//    //event fired by Filter swiftui buttons
+//    func dispatch(_ action: Status) {
+//        print("Action: \(action)")
+//        viewModel.filterByStatus(action)
+//    }
         
     private func setupUI() {
             title = "Characters"
             view.backgroundColor = .white
             
             // Setup table view
-            tableView.dataSource = self
-            tableView.delegate = self
-            tableView.register(HostingTableViewCell<CellView>.self, forCellReuseIdentifier: CellView.identifier)
+            tableView.dataSource = tableViewDataSource
+            tableView.delegate = tableViewDataSource
             view.addSubview(tableView)
             tableView.translatesAutoresizingMaskIntoConstraints = false
             
@@ -99,14 +105,22 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
                 overlay?.removeFromSuperview()
             }
         }
+}
 
-    //Setting TableView dataSource and delegate methods
+class TableDataSource: NSObject, UITableViewDataSource, UITableViewDelegate {
+    let viewModel: TaskListViewModel
+    var onPushDelegation:((TaskDetailsViewController) -> Void)?
+
+    init( viewModel: TaskListViewModel) {
+        self.viewModel = viewModel
+        
+    }
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         viewModel.numberofRows()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let cell =  TableViewHelper.cellForIndexPath(indexPath, withIdentifier: CellView.identifier, andViewModel: viewModel, in: tableView)
         return cell
     }
@@ -120,8 +134,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 //        coordinator.showTaskDetails(with: taskViewModel)
         
         let detailsViewController = TaskDetailsViewController(viewModel: taskViewModel)
-        
-        navigationController?.pushViewController(detailsViewController, animated: true)
+        onPushDelegation?(detailsViewController)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -130,15 +143,12 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     //put filter buttons in tableview header section
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+       
         let filter = UIHostingController(rootView: FilterButtonsView(dispatch: self.dispatch))
-        
-        filter.didMove(toParent: self)
-        
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 100))
         filter.view.frame = headerView.bounds
 
         headerView.addSubview(filter.view)
-    
         headerView.translatesAutoresizingMaskIntoConstraints = false
         return headerView
     }
@@ -158,6 +168,13 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
                 viewModel.fetchNextPage()
             }
         }
+    }
+  
+    
+    //event fired by Filter swiftui buttons
+    func dispatch(_ action: Status) {
+        print("Action: \(action)")
+        viewModel.filterByStatus(action)
     }
     
 }

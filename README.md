@@ -85,9 +85,6 @@ This sample is written in both  Swift and SwiftUI.That version contain both UIKI
 
 ## Unit Tests
 
-Project has unit tests written for the TableviewList . These tests are in the KitTests group. 
-
-
-
+Project has unit tests written for the TableviewList in ViewController. 
     - To run the unit tests, select (either the  iOS or OS X) scheme in the Scheme menu. Then hold the Run button down and select the "Test" option, or press Command+u to run the tests.
 

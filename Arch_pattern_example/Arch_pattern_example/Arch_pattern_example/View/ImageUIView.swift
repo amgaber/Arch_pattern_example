@@ -20,7 +20,7 @@ struct ImageUIView: View {
                     Image(systemName: "person.fill.questionmark").resizable()
                         .scaledToFit()
                 } else {
-                    ProgressView()
+                    ProgressSwiftUIView()
                 }
             }
             .aspectRatio(contentMode: .fill)

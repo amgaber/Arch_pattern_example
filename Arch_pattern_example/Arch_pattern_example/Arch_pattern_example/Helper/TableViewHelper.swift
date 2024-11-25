@@ -32,4 +32,8 @@ struct TableViewHelper{
                                         location: viewModel.location.name,
                                         gender: viewModel.gender.rawValue))
     }
+    
+    static func progresView() -> UIViewController {
+        return UIHostingController(rootView: ProgressSwiftUIView())
+    }
 }

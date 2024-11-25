@@ -24,18 +24,19 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         // Bind ViewModel updates
         viewModel.onTasksUpdated = { [weak self] in
+            DispatchQueue.main.async {
+                self?.setUpProgressView(false)
+                self?.setupUI()
+
+            }
             self?.tableView.reloadData()
         }
         
         viewModel.onLoadingState = { [weak self] isLoading in
-            if isLoading {
-                // Show a loading spinner
-//                ProgressView<<#Label: View#>, <#CurrentValueLabel: View#>>.show()
-            } else {
-                // Hide the loading spinner
-//                ProgressView.hide()
+            DispatchQueue.main.async {
+                self?.setUpProgressView(isLoading)
+
             }
-            
         }
         
         //fetch Task with basic URL without pagination
@@ -77,7 +78,26 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
                 tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
             ])
         }
+    
+        func setUpProgressView(_ isloading: Bool) {
+            let progress = TableViewHelper.progresView()
+            progress.didMove(toParent: self)
+            progress.view.frame = view.bounds
+            
+            var overlay : UIView? // This should be a class variable
+            overlay = UIView(frame: view.frame)
+            overlay!.backgroundColor = .black
+            overlay!.alpha = 0.8
+            overlay?.addSubview(progress.view)
+            view.addSubview(overlay!)
+            if isloading {
+                view.addSubview(overlay!)
+            }else {
+                overlay?.removeFromSuperview()
+            }
+        }
 
+    //Setting TableView dataSource and delegate methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         viewModel.numberofRows()
     }

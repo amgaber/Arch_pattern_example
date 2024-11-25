@@ -38,7 +38,7 @@ class TaskListViewModel{
         }
         
         isLoading = true
-        onLoadingState?(isLoading)
+        onLoadingState?(true)
         
         self.characterService.fetchTasksWithPaging(from: url) {[weak self] res in
             switch res {

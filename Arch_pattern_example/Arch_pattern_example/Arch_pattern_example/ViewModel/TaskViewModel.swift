@@ -23,7 +23,7 @@ class TaskViewModel {
         item.image
     }
    
-    var species: Species {
+    var species: String {
         item.species
     }
     

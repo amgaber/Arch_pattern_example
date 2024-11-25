@@ -17,7 +17,7 @@ class TaskTableViewCell: UITableViewCell {
     //Configure cell with data
     func configure(with viewModel: TaskViewModel){
         titleLabel.text = viewModel.name
-        descriptionLabel.text = viewModel.species.rawValue
+        descriptionLabel.text = viewModel.species
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

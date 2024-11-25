@@ -12,6 +12,11 @@ struct ResultResponse: Codable {
     let results:[Item]
 }
 
+//enum NetworkError: Error {
+//    case invalidURL
+//    case noData
+//}
+
 struct Info: Codable {
     let count:Int
     let next:String?
@@ -22,7 +27,7 @@ struct Item: Codable {
     let id: Int
     let name: String
     let status: Status
-    let species: Species
+    let species: String
     let type: String
     let gender: Gender
     let origin, location: Location
@@ -35,6 +40,7 @@ struct Item: Codable {
 enum Gender: String, Codable {
     case female = "Female"
     case male = "Male"
+    case genderless = "Genderless"
     case unknown = "unknown"
 }
 
@@ -44,13 +50,17 @@ struct Location: Codable {
     let url: String
 }
 
-enum Species: String, Codable {
-    case alien = "Alien"
-    case human = "Human"
-}
-
 enum Status: String, Codable {
     case alive = "Alive"
     case dead = "Dead"
     case unknown = "unknown"
 }
+
+//we tried to make it enum , but there is a corruption in parsing data from API
+//enum Species: String, Codable {
+//    case alien = "Alien"
+//    case human = "Human"
+//    case Humanoid = "Humanoid"
+//    case Poopybutthole = "Poopybutthole"
+//    case unknown = "unknown"
+//}

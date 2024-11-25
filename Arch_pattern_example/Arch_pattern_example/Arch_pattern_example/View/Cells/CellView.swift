@@ -32,5 +32,5 @@ struct CellView: View {
 }
 
 #Preview {
-    CellView(name: "alaa", imageURL: "https://rickandmortyapi.com/api/character/avatar/361.jpeg", species: Species.human.rawValue)
+    CellView(name: "alaa", imageURL: "https://rickandmortyapi.com/api/character/avatar/361.jpeg", species: "Human")
 }

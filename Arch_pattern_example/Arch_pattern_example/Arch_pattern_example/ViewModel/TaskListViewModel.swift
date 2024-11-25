@@ -13,22 +13,61 @@ class TaskListViewModel{
     private let characterService = CharactersFetchService()
     
     var onTasksUpdated:(() -> Void)?
+    var onLoadingState: ((Bool) -> Void)?
+
+    //For paging
+//    private var currentPage = 1
     
+    private var isLoading = false
+    var hasMorePages = true
 
-    func getCharacters(){
+    
+    private var nextPageURL: String?
+    private var prevPageURL: String?
+    
+    
+    //Using "reset" for refreshing tableviewData , Using "append: Bool" to get the next page data
+    func getCharacters(from url: URL, reset: Bool = false, append: Bool = false){
         
-        self.characterService.fetchTasks { res in
+        guard !isLoading else { return }
+        
+        if reset {
+            taskList.removeAll()
+//            currentPage = 1
+            hasMorePages = true
+        }
+        
+        isLoading = true
+        onLoadingState?(isLoading)
+        
+        self.characterService.fetchTasksWithPaging(from: url) {[weak self] res in
             switch res {
-            case .success(let items):
+                
+            case .success(let apiResult):
+                self?.isLoading = false
+                self?.onLoadingState?(false)
+                
                 DispatchQueue.main.async {
-                    self.taskList.append(contentsOf: items)
-
-                    self.onTasksUpdated?()
+                    if append {
+                        self?.taskList.append(contentsOf: apiResult.results)
+                    } else {
+                        self?.taskList = apiResult.results
+                    }
+                    
+                    self?.nextPageURL = apiResult.info.next
+                    self?.prevPageURL = apiResult.info.prev
+                    
+                    //Check if there is next page for pagination
+                    self?.hasMorePages = (self?.nextPageURL != nil)
+                    
+                    self?.onTasksUpdated?()
                 }
             case .failure(let error):
-                DispatchQueue.main.async {
-                    print(error.localizedDescription)
-                }
+                self?.isLoading = false
+                self?.onLoadingState?(false)
+               DispatchQueue.main.async {
+                   print(error.localizedDescription)
+               }
             }
         }
     }
@@ -40,5 +79,12 @@ class TaskListViewModel{
     //Get a TaskViewModel for a specific row
     func taskViewModel(at index: Int) -> TaskViewModel{
         TaskViewModel(item: taskList[index])
+    }
+    
+    
+    
+    func fetchNextPage() {
+        guard let nextPageURL = nextPageURL , let nextURL = URL(string: nextPageURL) else { return }
+        getCharacters(from: nextURL, reset: false, append: true)
     }
 }

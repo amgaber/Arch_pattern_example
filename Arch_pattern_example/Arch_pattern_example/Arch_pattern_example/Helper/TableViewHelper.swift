@@ -16,7 +16,7 @@ struct TableViewHelper{
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
         cell.isEditing = true
         cell.contentConfiguration = UIHostingConfiguration {
-            CellView(name: viewModel.taskViewModel(at: indexPath.row).name, imageURL: viewModel.taskViewModel(at: indexPath.row).imageString, species: viewModel.taskViewModel(at: indexPath.row).species.rawValue)
+            CellView(name: viewModel.taskViewModel(at: indexPath.row).name, imageURL: viewModel.taskViewModel(at: indexPath.row).imageString, species: viewModel.taskViewModel(at: indexPath.row).species)
         }
         
         return cell
@@ -27,7 +27,7 @@ struct TableViewHelper{
                                     DetailView(
                                         name: viewModel.name,
                                         imageURL: viewModel.imageString,
-                                        species: viewModel.species.rawValue,
+                                        species: viewModel.species,
                                         status: viewModel.status.rawValue,
                                         location: viewModel.location.name,
                                         gender: viewModel.gender.rawValue))

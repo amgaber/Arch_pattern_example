@@ -6,6 +6,7 @@
 ////
 //
 import UIKit
+import SwiftUI
 
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
@@ -25,12 +26,21 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             self?.tableView.reloadData()
         }
         
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        //fetch Task
-        viewModel.getCharacters()
+        viewModel.onLoadingState = { [weak self] isLoading in
+            if isLoading {
+                // Show a loading spinner
+//                ProgressView<<#Label: View#>, <#CurrentValueLabel: View#>>.show()
+            } else {
+                // Hide the loading spinner
+//                ProgressView.hide()
+            }
+            
+        }
+        
+        //fetch Task with basic URL without pagination
+        guard let baseURL = Endpoint.characters(0).url else { return }
+        viewModel.getCharacters(from: baseURL , reset: false , append: false)
+        
     }
 
     private func setupUI() {
@@ -77,6 +87,19 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         UITableView.automaticDimension
+    }
+    
+    //show next page on scrollTo the end of table -it shows only 20 items for each page.
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let offset = scrollView.contentOffset.y
+        let height = scrollView.frame.height
+        let contentHeight = scrollView.contentSize.height
+        
+        if offset >= contentHeight - height {
+            if viewModel.hasMorePages {
+                viewModel.fetchNextPage()
+            }
+        }
     }
     
 }

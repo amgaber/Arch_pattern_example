@@ -12,7 +12,7 @@ let baseURLString = "https://rickandmortyapi.com/api/"
  enum Endpoint {
     
     case baseURL
-     case characters(_ page: Int)
+     case characters(_ page: Int, _ status: String)
     case episodes(_ page: Int)
     case locations(_ page: Int)
     case seasons(_ page: Int)
@@ -30,10 +30,35 @@ let baseURLString = "https://rickandmortyapi.com/api/"
     var url: URL? {
         switch self {
         case .baseURL: return URL(string: path)
-        case .characters(let page): return URL(string: path + (page > 0 ? "/?page=\(page)" : ""))
+        case .characters(let page, let status): return URL(string: path + (query(page: page, status: status)))
         case .episodes(let page): return URL(string: path + (page > 0 ? "/?page=\(page)" : ""))
         case .locations(let page): return URL(string: path + (page > 0 ? "/?page=\(page)" : ""))
         case .seasons(let page): return URL(string: path + (page > 0 ? "/?page=\(page)" : ""))
         }
     }
+     
+     
+     //TODO: need fixes
+     func  query( page: Int, status: String) -> String {
+         var query = ""
+         
+         if page > 0 {
+             if status.isEmpty {
+                 query = "/?page=\(page)"
+             }else {
+                 query =  "/?page=\(page)&status=\(String(describing: status))"
+             }
+             
+         } else {
+           
+             if status.isEmpty {
+                 query = ""
+             }else {
+                 query =  "/?status=\(String(describing: status))"
+             }
+             
+         }
+         return query
+     }
 }
+

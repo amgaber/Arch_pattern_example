@@ -87,4 +87,11 @@ class TaskListViewModel{
         guard let nextPageURL = nextPageURL , let nextURL = URL(string: nextPageURL) else { return }
         getCharacters(from: nextURL, reset: false, append: true)
     }
+    
+    
+    func filterByStatus(_ status: Status) {
+        //fetch Task with basic URL without pagination
+        guard let filterURL = Endpoint.characters(0, status.rawValue).url else { return }
+        getCharacters(from: filterURL , reset: false , append: false)
+    }
 }
